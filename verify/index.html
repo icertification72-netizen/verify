@@ -103,9 +103,9 @@
 </div>
 
 <script>
-    const SHEET_CSV_URL = "https://google.com";
-
+    const SHEET_ID = "1cL5DUN9nIsMSc1XEY0qaCgSPNzLHXOvk27g44ONAngQ";
     let currentType = 'individual';
+    let searchCode = '';
 
     function selectType(type) {
         currentType = type;
@@ -117,74 +117,61 @@
         document.getElementById('error-msg').style.display = 'none';
     }
 
-    function parseCSV(text) {
-        const rows = [];
-        let row = [], col = '', inQuotes = false;
-        for (let i = 0; i < text.length; i++) {
-            const c = text[i], next = text[i + 1];
-            if (c === '"' && inQuotes && next === '"') { col += '"'; i++; }
-            else if (c === '"') { inQuotes = !inQuotes; }
-            else if (c === ',' && !inQuotes) { row.push(col.trim()); col = ''; }
-            else if ((c === '\r' || c === '\n') && !inQuotes) {
-                if (c === '\r' && next === '\n') i++;
-                row.push(col.trim());
-                if (row.some(cell => cell !== '')) rows.push(row);
-                row = []; col = '';
-            } else { col += c; }
-        }
-        if (col !== '' || row.length > 0) {
-            row.push(col.trim());
-            rows.push(row);
-        }
-        return rows;
+    function verifyCert() {
+        searchCode = document.getElementById('cert-code').value.trim().toUpperCase();
+        if (!searchCode) return;
+
+        document.getElementById('result-box').style.display = 'none';
+        document.getElementById('error-msg').style.display = 'none';
+        document.getElementById('loading-msg').style.display = 'block';
+
+        const oldScript = document.getElementById('gviz-script');
+        if (oldScript) oldScript.remove();
+
+        const script = document.createElement('script');
+        script.id = 'gviz-script';
+        script.src = `https://google.com{SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:handleSheetResponse&t=${new Date().getTime()}`;
+        script.onerror = function() {
+            document.getElementById('loading-msg').style.display = 'none';
+            document.getElementById('error-msg').innerText = "❌ Connection error. Please try again.";
+            document.getElementById('error-msg').style.display = 'block';
+        };
+        document.body.appendChild(script);
     }
 
-    async function verifyCert() {
-        const code = document.getElementById('cert-code').value.trim().toUpperCase();
+    function handleSheetResponse(json) {
+        document.getElementById('loading-msg').style.display = 'none';
         const resBox = document.getElementById('result-box');
         const errBox = document.getElementById('error-msg');
-        const loadBox = document.getElementById('loading-msg');
-
-        if (!code) return;
-
-        resBox.style.display = 'none';
-        errBox.style.display = 'none';
-        loadBox.style.display = 'block';
+        errBox.innerText = "❌ Certificate code not found. Please check and try again.";
 
         try {
-            const separator = SHEET_CSV_URL.includes('?') ? '&' : '?';
-            const response = await fetch(SHEET_CSV_URL + separator + "t=" + new Date().getTime());
-            const csvText = await response.text();
-            const rows = parseCSV(csvText);
-
+            const rows = json.table.rows;
             let foundCert = null;
 
-            for (let i = 1; i < rows.length; i++) {
-                const r = rows[i];
-                if (r.length >= 6) {
-                    const colA = r.at(0) || "";
-                    const colB = r.at(1) || "";
-                    const colC = r.at(2) || "";
-                    const colD = r.at(3) || "";
-                    const colE = r.at(4) || "";
-                    const colF = r.at(5) || "";
-                    const colG = r.at(6) || "individual";
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows.at(i).c;
+                if (!cells) continue;
 
-                    if (colA.toUpperCase() === code && colG.toLowerCase() === currentType) {
-                        foundCert = {
-                            num: colA,
-                            org: colB,
-                            std: colC,
-                            cat: colD,
-                            issue: colE,
-                            valid: colF
-                        };
-                        break;
-                    }
+                const getVal = (idx) => {
+                    const cell = cells.at(idx);
+                    if (!cell) return "";
+                    return (cell.f !== undefined && cell.f !== null) ? String(cell.f).trim() : (cell.v !== null ? String(cell.v).trim() : "");
+                };
+
+                const colA = getVal(0);
+                const colB = getVal(1);
+                const colC = getVal(2);
+                const colD = getVal(3);
+                const colE = getVal(4);
+                const colF = getVal(5);
+                const colG = getVal(6) || "individual";
+
+                if (colA.toUpperCase() === searchCode && colG.toLowerCase() === currentType) {
+                    foundCert = { num: colA, org: colB, std: colC, cat: colD, issue: colE, valid: colF };
+                    break;
                 }
             }
-
-            loadBox.style.display = 'none';
 
             if (foundCert) {
                 document.getElementById('res-num').innerText = foundCert.num;
@@ -197,9 +184,7 @@
             } else {
                 errBox.style.display = 'block';
             }
-        } catch (error) {
-            loadBox.style.display = 'none';
-            errBox.innerText = "❌ Connection error. Please try again.";
+        } catch (e) {
             errBox.style.display = 'block';
         }
     }
