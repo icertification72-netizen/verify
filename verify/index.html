@@ -103,7 +103,7 @@
 </div>
 
 <script>
-    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSk1qpDTqEKogiQFFSw4u-FXnb62EqmWU7jCa8Uk5CiStoTN_cfaW3rIWj8T5ZUVp0_K9hTHWieuN35/pub?output=csv";
+    const SHEET_CSV_URL = "https://google.com";
 
     let currentType = 'individual';
 
@@ -162,17 +162,22 @@
             for (let i = 1; i < rows.length; i++) {
                 const r = rows[i];
                 if (r.length >= 6) {
-                    const rowCode = (r || "").toUpperCase();
-                    const rowType = (r || "individual").toLowerCase();
-                    
-                    if (rowCode === code && rowType === currentType) {
+                    const colA = r.at(0) || "";
+                    const colB = r.at(1) || "";
+                    const colC = r.at(2) || "";
+                    const colD = r.at(3) || "";
+                    const colE = r.at(4) || "";
+                    const colF = r.at(5) || "";
+                    const colG = r.at(6) || "individual";
+
+                    if (colA.toUpperCase() === code && colG.toLowerCase() === currentType) {
                         foundCert = {
-                            num: r,
-                            org: r,
-                            std: r,
-                            cat: r,
-                            issue: r,
-                            valid: r
+                            num: colA,
+                            org: colB,
+                            std: colC,
+                            cat: colD,
+                            issue: colE,
+                            valid: colF
                         };
                         break;
                     }
