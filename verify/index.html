@@ -160,11 +160,12 @@ flex-direction: column;
     <div class="result" id="result-box">
         <h3 id="res-header">✅ Certificate verified successfully.</h3>
 <p><strong id="lbl-num">Registration number:</strong> <span id="res-num"></span></p>
-<p><strong id="lbl-org">Name / Organization:</strong> <span id="res-org"></span></p>
-<p><strong id="lbl-std">Standard:</strong> <span id="res-std"></span></p>
-<p><strong id="lbl-cat">Classification:</strong> <span id="res-cat"></span></p>
-<p><strong id="lbl-issue">Issue date:</strong> <span id="res-issue"></span></p>
-<p><strong id="lbl-valid">Expiry date:</strong> <span id="res-valid"></span></p>
+        <p><strong id="lbl-org">Organization:</strong> <span id="res-org"></span></p>
+        <p><strong id="lbl-std">Standard:</strong> <span id="res-std"></span></p>
+        <p><strong id="lbl-cat-name">Category:</strong> <span id="res-cat-name"></span></p>
+        <p><strong id="lbl-cat">Scope:</strong> <span id="res-cat"></span></p>
+        <p><strong id="lbl-issue">Issue date:</strong> <span id="res-issue"></span></p>
+        <p><strong id="lbl-valid">Valid until:</strong> <span id="res-valid"></span></p>
     </div>
 </div>
 </div>
@@ -224,10 +225,10 @@ flex-direction: column;
     let currentType = 'individual';
 var currentLang = 'en';
     // قاعدة بيانات الشهادات
-    const certificatesList = [
-        { code: "SCS/LA/0202", type: "individual", org: "Ziyad Mohammed Abdulwahab Asiri", std: "ISO 9001:2015", cat: "Lead Auditor", issue: "05/10/2026", valid: "04/10/2027" },
-        { code: "ABScGMP55730", type: "individual", org: "Mohamed El Sayed Abd El Nazir", std: "ISO 22716:2007", cat: "Intrnal Auditor", issue: "09 NOV 2026", valid: "08 NOV 2027" },
-        { code: "COMP999", type: "company", org: "Al-Noor Trading Co.", std: "ISO 9001:2015", cat: "Quality Management System", issue: "01/10/2026", valid: "30/09/2027" }
+   const certificatesList = [
+        { code: "SCS/LA/0202", type: "individual", org: "Ziyad Mohammed Abdulwahab Asiri", std: "ISO 9001:2015", category: "Quality Management System (QMS)", cat: "Lead Auditor", issue: "05/10/2026", valid: "04/10/2027" },
+        { code: "ABScGMP55730", type: "individual", org: "Mohamed El Sayed Abd El Nazir Abd Ellah", std: "ISO 22716:2007", category: "Good Manufacturing Practices (GMP)", cat: "Internal Auditor", issue: "09 Nov 2026", valid: "08 Nov 2027" },
+        { code: "COMP999", type: "company", org: "Al-Noor Trading Co.", std: "ISO 9001:2015", category: "Quality Management System (QMS)", cat: "General Trading", issue: "01/10/2026", valid: "30/09/2027" }
     ];
 
    function selectType(type) {
@@ -258,11 +259,12 @@ var currentLang = 'en';
         document.getElementById('error-msg').innerText = isAr ? '❌ رقم الشهادة غير موجود. يرجى التأكد والمحاولة مرة أخرى.' : '❌ Certificate code not found. Please check and try again.';
         document.getElementById('res-header').innerText = isAr ? '✅ تم التحقق من الشهادة بنجاح.' : '✅ Certificate verified successfully.';
         document.getElementById('lbl-num').innerText = isAr ? 'رقم التسجيل:' : 'Registration number:';
-        document.getElementById('lbl-org').innerText = isAr ? 'الاسم / المؤسسة:' : 'Name / Organization:';
+        document.getElementById('lbl-org').innerText = isAr ? 'المؤسسة / الاسم:' : 'Organization:';
         document.getElementById('lbl-std').innerText = isAr ? 'المواصفة القياسية:' : 'Standard:';
-        document.getElementById('lbl-cat').innerText = isAr ? 'التصنيف:' : 'Classification:';
+        document.getElementById('lbl-cat-name').innerText = isAr ? 'الفئة:' : 'Category:';
+        document.getElementById('lbl-cat').innerText = isAr ? 'النطاق:' : 'Scope:';
         document.getElementById('lbl-issue').innerText = isAr ? 'تاريخ الإصدار:' : 'Issue date:';
-        document.getElementById('lbl-valid').innerText = isAr ? 'تاريخ الانتهاء:' : 'Expiry date:';
+        document.getElementById('lbl-valid').innerText = isAr ? 'صالحة حتى:' : 'Valid until:';
         selectType(currentType);
     }
 
@@ -277,6 +279,7 @@ var currentLang = 'en';
             document.getElementById('res-num').innerText = cert.code;
             document.getElementById('res-org').innerText = cert.org;
             document.getElementById('res-std').innerText = cert.std;
+            document.getElementById('res-cat-name').innerText = cert.category || "";
             document.getElementById('res-cat').innerText = cert.cat;
             document.getElementById('res-issue').innerText = cert.issue;
             document.getElementById('res-valid').innerText = cert.valid;
