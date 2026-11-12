@@ -43,25 +43,25 @@
 <div class="main-wrapper">
     <div class="container">
         <div class="lang-bar">
-            <button type="button" class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">🌐 العربية</button>
+            <button type="button" class="lang-btn" id="lang-toggle" onclick="switchLanguage()">🌐 العربية</button>
         </div>
         <div class="logo-box"><img src="LOGO GLOBAL.jpeg" alt="Global Systems Certification Logo"></div>
         <h2 id="main-title">Global Systems Certification</h2>
         <div class="tabs">
-            <div class="tab" id="tab-company" onclick="selectType('company')">
+            <div class="tab" id="tab-company" onclick="changeCategory('company')">
                 <h4 id="tab-comp-title">Company Certificates</h4>
                 <p id="tab-comp-desc">Verify organization & business certificates</p>
             </div>
-            <div class="tab active" id="tab-individual" onclick="selectType('individual')">
+            <div class="tab active" id="tab-individual" onclick="changeCategory('individual')">
                 <h4 id="tab-ind-title">Individual Certificates</h4>
                 <p id="tab-ind-desc">Verify personal & professional certificates</p>
             </div>
         </div>
-        <div class="search-box">
+        <form class="search-box" onsubmit="runSearch(event)">
             <label id="input-label">ENTER INDIVIDUAL CODE</label>
             <input type="text" id="cert-code" placeholder="e.g. ABC12345">
-            <button type="button" class="search-btn" id="search-btn" onclick="verifyCert()">🔍 Search</button>
-        </div>
+            <button type="submit" class="search-btn" id="search-btn">🔍 Search</button>
+        </form>
         <div class="error" id="error-msg">❌ Certificate code not found. Please check and try again.</div>
         <div class="result" id="result-box">
             <h3 id="res-header">✅ Certificate verified successfully.</h3>
@@ -87,12 +87,13 @@
     <svg viewBox="0 0 32 32"><path d="M16 2.003c-7.732 0-14 6.268-14 14 0 2.467.645 4.877 1.87 7.003l-1.988 7.262 7.434-1.95a13.94 13.94 0 0 0 6.684 1.703h.006c7.731 0 14-6.268 14-14 0-3.74-1.456-7.256-4.101-9.901a13.91 13.91 0 0 0-9.905-4.117zm0 25.63h-.005a11.61 11.61 0 0 1-5.918-1.619l-.424-.252-4.412 1.157 1.178-4.302-.276-.44a11.608 11.608 0 0 1-1.782-6.174c0-6.417 5.221-11.638 11.643-11.638 3.109 0 6.031 1.211 8.229 3.41a11.564 11.564 0 0 1 3.406 8.233c0 6.418-5.222 11.635-11.639 11.635zm6.384-8.716c-.35-.175-2.07-1.021-2.391-1.138-.321-.117-.554-.175-.788.175s-.904 1.138-1.108 1.372c-.204.233-.408.263-.758.088-.35-.175-1.478-.545-2.815-1.737-1.041-.928-1.744-2.075-1.948-2.425-.204-.35-.022-.539.153-.713.158-.157.35-.408.525-.612.175-.204.233-.35.35-.583.117-.233.058-.438-.029-.612-.088-.175-.788-1.898-1.079-2.599-.284-.683-.573-.59-.788-.601l-.671-.012c-.233 0-.612.088-.933.438s-1.225 1.196-1.225 2.918 1.254 3.385 1.429 3.618c.175.233 2.468 3.768 5.978 5.284.835.361 1.487.576 1.995.737.838.266 1.601.229 2.204.139.673-.1 2.07-.846 2.362-1.663.292-.817.292-1.517.204-1.663-.087-.146-.321-.233-.671-.408z"/></svg>
 </a>
 <script>
-    var currentType = 'individual';
-    var currentLang = 'en';
+    var activeCategory = 'individual';
+    var activeLang = 'en';
 
-    var translations = {
-        en: { toggleBtn: "🌐 العربية", title: "Global Systems Certification", compTitle: "Company Certificates", compDesc: "Verify organization & business certificates", indTitle: "Individual Certificates", indDesc: "Verify personal & professional certificates", labelComp: "ENTER COMPANY CODE", labelInd: "ENTER INDIVIDUAL CODE", placeholder: "e.g. ABC12345", searchBtn: "🔍 Search", errorMsg: "❌ Certificate code not found. Please check and try again.", resHeader: "✅ Certificate verified successfully.", lblNum: "Registration number:", lblOrg: "Name / Organization:", lblStd: "Standard:", lblCat: "Classification:", lblIssue: "Issue date:", lblValid: "Expiry date:" },
-        ar: { toggleBtn: "🌐 English", title: "التحقق من الشهادات - Global Systems Certification", compTitle: "شهادات الشركات", compDesc: "التحقق من شهادات المؤسسات والشركات", indTitle: "شهادات الأفراد", indDesc: "التحقق من الشهادات الشخصية والمهنية", labelComp: "أدخل كود شهادة الشركة", labelInd: "أدخل كود الشهادة الفردية", placeholder: "مثال: ABC12345", searchBtn: "🔍 بحث", errorMsg: "❌ رقم الشهادة غير موجود. يرجى التأكد والمحاولة مرة أخرى.", resHeader: "✅ تم التحقق من الشهادة بنجاح.", lblNum: "رقم التسجيل:", lblOrg: "الاسم / المؤسسة:", lblStd: "المواصفة القياسية:", lblCat: "التصنيف:", lblIssue: "تاريخ الإصدار:", lblValid: "تاريخ الانتهاء:" }
+    var db = {
+        "SCS/LA/0202": { type: "individual", org: "Ziyad Mohammed Abdulwahab Asiri", std: "ISO 9001:2015", cat: "Lead Auditor", issue: "05/10/2026", valid: "04/10/2027" },
+        "COMP999": { type: "company", org: "Al-Noor Trading Co.", std: "ISO 9001:2015", cat: "Quality Management System", issue: "01/10/2026", valid: "30/09/2027" }
     };
 
-    var certificatesList = [
+    var langData = {
+        en: { btn: "🌐 العربية", title: "Global Systems Certification", cTitle: "Company Certificates", cDesc: "Verify organization & business certificates", iTitle: "Individual Certificates", iDesc: "Verify personal & professional certificates", lComp: "ENTER COMPANY CODE", lInd: "ENTER INDIVIDUAL CODE", ph: "e.g. ABC12345", sBtn: "🔍 Search", err: "❌ Certificate code not found. Please check and try again.", ok: "✅ Certificate verified successfully.", n: "Registration number:", o: "Name / Organization:", s: "Standard:", c: "Classification:", i: "Issue date:", v: "Expiry date:" },
