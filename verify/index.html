@@ -10,7 +10,7 @@
         .main-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
         .container { background: rgba(255, 255, 255, 0.58); max-width: 500px; width: 100%; padding: 25px 30px 30px; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.18); text-align: center; backdrop-filter: blur(2px); border: 1px solid rgba(255, 255, 255, 0.7); }
         .lang-bar { display: flex; justify-content: flex-end; margin-bottom: 10px; }
-        .lang-btn { background: rgba(255, 255, 255, 0.9); border: 1.5px solid #2b547e; color: #1e3a5f; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: bold; cursor: pointer; width: auto; margin-top: 0; }
+        .lang-btn { background: rgba(255, 255, 255, 0.9); border: 1.5px solid #2b547e; color: #1e3a5f; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: bold; cursor: pointer; }
         .lang-btn:hover { background-color: #2b547e; color: #ffffff; }
         .logo-box { margin-bottom: 15px; }
         .logo-box img { max-width: 190px; max-height: 95px; object-fit: contain; }
@@ -26,18 +26,16 @@
         .search-btn { width: 100%; padding: 14px; background-color: #2b547e; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 12px; }
         .search-btn:hover { background-color: #1e3a5f; }
         .result { margin-top: 25px; padding: 20px; border-radius: 12px; background-color: rgba(240, 245, 250, 0.95); border: 1px solid #d0e1f2; text-align: start; display: none; }
-        .result h3 { color: #1e3a5f; margin-top: 0; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+        .result h3 { color: #1e3a5f; margin-top: 0; font-size: 18px; }
         .result p { margin: 8px 0; color: #333; font-size: 14px; }
         .error { margin-top: 20px; color: #d9534f; font-weight: bold; display: none; }
-        .site-footer { background: linear-gradient(135deg, #0d5c91 0%, #157bb8 100%); color: #ffffff; padding: 35px 20px 20px; font-size: 14px; margin-top: auto; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); direction: rtl; }
+        .site-footer { background: linear-gradient(135deg, #0d5c91 0%, #157bb8 100%); color: #ffffff; padding: 35px 20px 20px; font-size: 14px; margin-top: auto; direction: rtl; }
         .footer-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; text-align: right; padding-bottom: 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
-        .footer-col h4 { margin: 0 0 12px; font-size: 16px; font-weight: bold; color: #ffffff; }
-        .footer-col p, .footer-col a { margin: 6px 0; color: #e6f2fa; text-decoration: none; display: block; font-size: 13px; transition: color 0.2s; }
-        .footer-col a:hover { color: #ffffff; text-decoration: underline; }
+        .footer-col h4 { margin: 0 0 12px; font-size: 16px; font-weight: bold; }
+        .footer-col p, .footer-col a { margin: 6px 0; color: #e6f2fa; text-decoration: none; display: block; font-size: 13px; }
         .footer-ltr { direction: ltr; text-align: right; }
         .footer-bottom { text-align: center; padding-top: 18px; font-size: 13px; color: #e6f2fa; }
-        .whatsapp-float { position: fixed; bottom: 25px; right: 25px; width: 58px; height: 58px; background-color: #25d366; color: #FFF; border-radius: 50px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease; text-decoration: none; }
-        .whatsapp-float:hover { transform: scale(1.1); background-color: #20ba5a; }
+        .whatsapp-float { position: fixed; bottom: 25px; right: 25px; width: 58px; height: 58px; background-color: #25d366; border-radius: 50px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; display: flex; align-items: center; justify-content: center; text-decoration: none; }
         .whatsapp-float svg { width: 32px; height: 32px; fill: white; }
     </style>
 </head>
@@ -46,7 +44,7 @@
 <div class="main-wrapper">
     <div class="container">
         <div class="lang-bar">
-            <button class="lang-btn" id="lang-btn" onclick="toggleLang()">🌐 العربية</button>
+            <button type="button" class="lang-btn" id="lang-btn" onclick="toggleLang()">🌐 العربية</button>
         </div>
 
         <div class="logo-box">
@@ -69,7 +67,7 @@
         <div class="search-box">
             <label id="input-label">ENTER INDIVIDUAL CODE</label>
             <input type="text" id="cert-code" placeholder="e.g. ABC12345">
-            <button class="search-btn" id="search-btn" onclick="verifyCert()">🔍 Search</button>
+            <button type="button" class="search-btn" id="search-btn" onclick="verifyCert()">🔍 Search</button>
         </div>
 
         <div class="error" id="error-msg">❌ Certificate code not found. Please check and try again.</div>
@@ -88,30 +86,12 @@
 
 <footer class="site-footer">
     <div class="footer-grid">
-        <div class="footer-col">
-            <h4>نبذة عنا</h4>
-            <p>مهمتنا</p>
-            <p>نحن نوظف!</p>
-        </div>
-        <div class="footer-col">
-            <h4>موارد</h4>
-            <p>فريق</p>
-            <p>أصول العلامة التجارية</p>
-        </div>
-        <div class="footer-col">
-            <h4>تواصل معنا</h4>
-            <p class="footer-ltr">00201035639002</p>
-            <a href="mailto:info@absglobal-eg.com" class="footer-ltr">info@absglobal-eg.com</a>
-        </div>
-        <div class="footer-col">
-            <h4>خدمة العملاء</h4>
-            <p class="footer-ltr">📞 00201035639002</p>
-            <a href="mailto:info@absglobal-eg.com" class="footer-ltr">✉️ info@absglobal-eg.com</a>
-        </div>
+        <div class="footer-col"><h4>نبذة عنا</h4><p>مهمتنا</p><p>نحن نوظف!</p></div>
+        <div class="footer-col"><h4>موارد</h4><p>فريق</p><p>أصول العلامة التجارية</p></div>
+        <div class="footer-col"><h4>تواصل معنا</h4><p class="footer-ltr">00201035639002</p><a href="mailto:info@absglobal-eg.com" class="footer-ltr">info@absglobal-eg.com</a></div>
+        <div class="footer-col"><h4>خدمة العملاء</h4><p class="footer-ltr">📞 00201035639002</p><a href="mailto:info@absglobal-eg.com" class="footer-ltr">✉️ info@absglobal-eg.com</a></div>
     </div>
-    <div class="footer-bottom">
-        جميع الحقوق محفوظة لشركة GLOBAL SYSTEMS CERTIFICATION 2026
-    </div>
+    <div class="footer-bottom">جميع الحقوق محفوظة لشركة GLOBAL SYSTEMS CERTIFICATION 2026</div>
 </footer>
 
 <a href="https://wa.me" class="whatsapp-float" target="_blank" title="تواصل معنا عبر واتساب">
@@ -122,10 +102,9 @@
     var currentType = 'individual';
     var currentLang = 'en';
 
-    var certificatesList = [
-        { code: "SCS/LA/0202", type: "individual", org: "Ziyad Mohammed Abdulwahab Asiri", std: "ISO 9001:2015", cat: "Lead Auditor", issue: "05/10/2026", valid: "04/10/2027" },
-        { code: "COMP999", type: "company", org: "Al-Noor Trading Co.", std: "ISO 9001:2015", cat: "Quality Management System", issue: "01/10/2026", valid: "30/09/2027" }
-    ];
+    var certs = new Map();
+    certs.set("SCS/LA/0202", { type: "individual", org: "Ziyad Mohammed Abdulwahab Asiri", std: "ISO 9001:2015", cat: "Lead Auditor", issue: "05/10/2026", valid: "04/10/2027" });
+    certs.set("COMP999", { type: "company", org: "Al-Noor Trading Co.", std: "ISO 9001:2015", cat: "Quality Management System", issue: "01/10/2026", valid: "30/09/2027" });
 
     function toggleLang() {
         currentLang = currentLang === 'en' ? 'ar' : 'en';
@@ -133,3 +112,8 @@
         document.getElementById('html-root').dir = isAr ? 'rtl' : 'ltr';
         document.getElementById('lang-btn').innerText = isAr ? '🌐 English' : '🌐 العربية';
         document.getElementById('comp-title').innerText = isAr ? 'شهادات الشركات' : 'Company Certificates';
+        document.getElementById('comp-desc').innerText = isAr ? 'التحقق من شهادات المؤسسات والشركات' : 'Verify organization & business certificates';
+        document.getElementById('ind-title').innerText = isAr ? 'شهادات الأفراد' : 'Individual Certificates';
+        document.getElementById('ind-desc').innerText = isAr ? 'التحقق من الشهادات الشخصية والمهنية' : 'Verify personal & professional certificates';
+        document.getElementById('cert-code').placeholder = isAr ? 'مثال: ABC12345' : 'e.g. ABC12345';
+        document.getElementById('search-btn').innerText = isAr ? '🔍 بحث' : '🔍 Search';
