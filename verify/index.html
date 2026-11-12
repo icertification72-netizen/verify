@@ -98,14 +98,40 @@ flex-direction: column;
 .footer-col p, .footer-col a { margin: 6px 0; color: #e6f2fa; text-decoration: none; display: block; font-size: 13px; }
 .footer-ltr { direction: ltr; text-align: right; }
 .footer-bottom { text-align: center; padding-top: 18px; font-size: 13px; color: #e6f2fa; }
+       .top-bar { width: 100%; background-color: #0d4a7a; color: #ffffff; padding: 8px 20px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; direction: ltr; }
+.top-bar a { color: #ffffff; text-decoration: none; font-weight: 500; }
+.main-header { width: 100%; background-color: #ffffff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.08); box-sizing: border-box; direction: ltr; }
+.header-logo img { height: 48px; object-fit: contain; }
+.hero-banner { width: 100%; background: linear-gradient(135deg, #0b3d66 0%, #155c96 100%); color: #ffffff; text-align: center; padding: 45px 20px; box-sizing: border-box; }
+.hero-breadcrumb { font-size: 13px; color: #cbd5e0; margin-bottom: 10px; }
+.hero-breadcrumb a { color: #ffffff; text-decoration: none; }
+.hero-banner h1 { margin: 0 0 10px; font-size: 28px; font-weight: bold; }
+.hero-banner p { margin: 0 auto; max-width: 550px; font-size: 14px; color: #e2e8f0; line-height: 1.5; } 
     </style>
 </head>
 <body>
+   <div class="top-bar">
+    <a href="tel:00201035639002">📞 +20 103 563 9002</a>
+    <span>Global Systems Certification</span>
+</div>
+
+<header class="main-header">
+    <div class="header-logo">
+        <img src="LOGO GLOBAL.jpeg" alt="Global Systems Certification">
+    </div>
+    <button type="button" class="lang-btn" id="lang-btn" onclick="toggleLang()">🇪🇬 AR</button>
+</header>
+
+<section class="hero-banner">
+    <div class="hero-breadcrumb">
+        <a href="https://mystrikingly.com">🏠 Home</a> &nbsp;›&nbsp; <span id="nav-val">Validation</span>
+    </div>
+    <h1 id="hero-title">Certificate Validation</h1>
+    <p id="hero-desc">Enter your certificate code below to verify its authenticity and view the details.</p>
+</section> 
 <div class="main-wrapper">
 <div class="container">
-    <div class="lang-bar">
-    <button type="button" class="lang-btn" id="lang-btn" onclick="toggleLang()">🌐 العربية</button>
-</div>
+   
     <div class="logo-box">
         <img src="LOGO GLOBAL.jpeg" alt="Global Systems Certification Logo">
     </div>
@@ -200,7 +226,10 @@ var currentLang = 'en';
         currentLang = (currentLang === 'en') ? 'ar' : 'en';
         var isAr = (currentLang === 'ar');
         document.getElementById('html-root').dir = isAr ? 'rtl' : 'ltr';
-        document.getElementById('lang-btn').innerText = isAr ? '🌐 English' : '🌐 العربية';
+        document.getElementById('lang-btn').innerText = isAr ? '🇺🇸 EN' : '🇪🇬 AR';
+        document.getElementById('nav-val').innerText = isAr ? 'التحقق' : 'Validation';
+        document.getElementById('hero-title').innerText = isAr ? 'التحقق من الشهادات' : 'Certificate Validation';
+        document.getElementById('hero-desc').innerText = isAr ? 'أدخل رمز الشهادة أدناه للتحقق من صحتها وعرض كافة التفاصيل.' : 'Enter your certificate code below to verify its authenticity and view the details.';
         document.getElementById('comp-title').innerText = isAr ? 'شهادات الشركات' : 'Company Certificates';
         document.getElementById('comp-desc').innerText = isAr ? 'التحقق من شهادات المؤسسات والشركات' : 'Verify organization & business certificates';
         document.getElementById('ind-title').innerText = isAr ? 'شهادات الأفراد' : 'Individual Certificates';
